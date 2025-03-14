@@ -19,7 +19,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: demo-actions
+      IMAGE_NAME: demo123
       PROJECT_ID: astute-azimuth-453510-b8
     steps:
     - uses: actions/checkout@v4
