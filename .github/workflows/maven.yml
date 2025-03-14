@@ -54,7 +54,7 @@ jobs:
         
     
 
-    -- name: Push Docker Image to Artifact Registry
+    - name: Push Docker Image to Artifact Registry
       env:
         GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
       run: |-
