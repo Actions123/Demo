@@ -47,7 +47,7 @@ jobs:
         GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
       run: |
         gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GCP_PROJECT_ID/action123/nginx:latest .
-        docker push us-central1-docker.pkg.dev/$GCP_PROJECT_ID/action123/nginx:latest
+        docker build -t us-central1-docker.pkg.dev/astute-azimuth-453510-b8/action123/nginx:latest .
+        docker push us-central1-docker.pkg.dev/astute-azimuth-453510-b8/action123/nginx:latest
 
     
