@@ -70,21 +70,7 @@ jobs:
       run: |
         docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
 
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v0
-      with:
-        credentials_json: ${{ secrets.GKE_CREDENTIALS }}
-
-      # Step 3: Set up kubectl to authenticate with the GKE cluster
-    - name: Set up kubectl for GKE
-      run: |
-       gcloud container clusters get-credentials autopilot-cluster-1 --zone ${{ secrets.ZONE }} --project ${{ secrets.GCP_PROJECT_ID }}
-
-      # Step 4: Apply Kubernetes manifests
-    - name: Deploy to GKE
-      run: |
-        kubectl apply -f resources.yaml
-        kubectl rollout status deployment/my-image  # Replace with your deployment name
+   
 
   
 
