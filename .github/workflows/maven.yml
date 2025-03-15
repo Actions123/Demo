@@ -63,12 +63,12 @@ jobs:
       # Step 5: Build the Docker image
     - name: Build Docker image
       run: |
-        docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/action123/my-image:${{ github.sha }} .
+        docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }} .
 
       # Step 6: Push the Docker image to Google Artifact Registry
     - name: Push Docker image to Google Artifact Registry
       run: |
-        docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/action123/my-image:${{ github.sha }}
+        docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
         
 
     
