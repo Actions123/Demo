@@ -44,8 +44,8 @@ jobs:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT_ID }}
       run: |
         gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/action123/nginx .
-        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/action123/nginx:latest
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT_ID/action123/nginx .
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT_ID/action123/nginx:latest
     
 
    
