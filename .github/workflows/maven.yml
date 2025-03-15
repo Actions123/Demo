@@ -35,17 +35,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Push Docker Image to GAR
-      uses: a94763075/push-to-gar-github-action@v0.3.1
-      with:
-        gcloud_service_key: ${{ secrets.GCP_CREDENTIALS }}
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        registry: ${{ secrets.GAR_REGISTRY }}
-        repository: ${{ secrets.GAR_REPOSITORY }}
-        image_name: 'springboot-images-new'
-        image_tags: 'latest,stable'
-        dockerfile: './Dockerfile'
+    - name: Build Docker image
+      run: |
+        docker build -t my-java-app .
       
+    - name: Verify Docker image
+      run: |
+        docker images
         
 
     
