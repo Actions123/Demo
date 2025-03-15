@@ -13,10 +13,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-env:
-  PROJECT_ID: fake-app-323017
-  REGION: northamerica-northeast1
-  GAR_LOCATION: northamerica-northeast1-docker.pkg.dev/fake-app-323017/repo-1/
+
 
 
 jobs:
@@ -35,32 +32,20 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: "Checkout"
-      uses: "actions/checkout@v3"
-
-    - id: "auth"
-      uses: "google-github-actions/auth@v1"
+    - name: install the gcloud cli
+      uses: google-github-actions/setup-gcloud@v0
       with:
-           credentials_json: "${{ secrets.SERVICE_ACCOUNT_KEY }}"
+        project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+        service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+        export_default_credentials: true
 
-    - name: "Set up Cloud SDK"
-      uses: "google-github-actions/setup-gcloud@v1"
-
-    - name: "Use gcloud CLI"
-      run: "gcloud info"
-
-    - name: "Docker auth"
-      run: |-
-          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
-
-    - name: Build image
-      run: docker build . --file DOCKERFILE_LOCATION --tag ${{ env.GAR_LOCATION }}
-      working-directory: WORKING_DIRECTORY
-
-    - name: Push image
-      run: docker push ${{ env.GAR_LOCATION }}
-
-    
+    - name: build and push the docker image
+      env:
+        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT_ID }}
+      run: |
+        gcloud auth configure-docker us-central1-docker.pkg.dev
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/action123/sana:latest .
+        docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/action123/sana:latest
     
 
    
