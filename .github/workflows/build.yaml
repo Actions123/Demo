@@ -1,12 +1,13 @@
-name: Build and Push Docker Image to GAR
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: project cicd flow
 
 on:
   push:
-    branches:
-      - main
+    branches: [ master ]
   pull_request:
-    branches:
-      - main
+    branches: [ master ]
 
 jobs:
   build:
@@ -24,23 +25,4 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
 
-      # Log in to Google Cloud
-      - name: Set up Google Cloud authentication
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-
-      # Configure Docker to use Artifact Registry
-      - name: Configure Docker to use Artifact Registry
-        run: |
-          gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
-
-      # Build Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/action123/my-image:${{ github.sha }} .
-
-      # Push Docker image to Artifact Registry
-      - name: Push Docker image to GAR
-        run: |
-          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/action123/my-image:${{ github.sha }}
+    
