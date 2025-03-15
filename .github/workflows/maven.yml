@@ -44,7 +44,7 @@ jobs:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT_ID }}
       run: |
         gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/action123/sana:latest .
+        docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT/action123/sana .
         docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT/action123/sana:latest
     
 
