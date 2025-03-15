@@ -13,6 +13,11 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+env:
+  PROJECT_ID: fake-app-323017
+  REGION: northamerica-northeast1
+  GAR_LOCATION: northamerica-northeast1-docker.pkg.dev/fake-app-323017/repo-1/
+
 
 jobs:
   build:
@@ -30,9 +35,32 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: "Checkout"
+      uses: "actions/checkout@v3"
+
+    - id: "auth"
+      uses: "google-github-actions/auth@v1"
+      with:
+           credentials_json: "${{ secrets.SERVICE_ACCOUNT_KEY }}"
+
+    - name: "Set up Cloud SDK"
+      uses: "google-github-actions/setup-gcloud@v1"
+
+    - name: "Use gcloud CLI"
+      run: "gcloud info"
+
+    - name: "Docker auth"
+      run: |-
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+    - name: Build image
+      run: docker build . --file DOCKERFILE_LOCATION --tag ${{ env.GAR_LOCATION }}
+      working-directory: WORKING_DIRECTORY
+
+    - name: Push image
+      run: docker push ${{ env.GAR_LOCATION }}
+
     
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag demo123:$(date +%s)
+    
 
    
