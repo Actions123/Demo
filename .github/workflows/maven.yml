@@ -32,22 +32,22 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: code checkout
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: install the gcloud cli
-      uses: google-github-actions/setup-gcloud@v2
+    - name: Push Docker Image to GAR
+      uses: a94763075/push-to-gar-github-action@v0.3.1
       with:
+        gcloud_service_key: ${{ secrets.GCP_CREDENTIALS }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-        export_default_credentials: true
+        registry: ${{ secrets.GAR_REGISTRY }}
+        repository: ${{ secrets.GAR_REPOSITORY }}
+        image_name: 'springboot-images-new'
+        image_tags: 'latest,stable'
+        dockerfile: './Dockerfile'
+      
+        
 
-    - name: build and push the docker image
-      env:
-        GOOGLE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
-      run: |
-        gcloud auth configure-docker us-central1-docker.pkg.dev
-        docker build -t us-central1-docker.pkg.dev/astute-azimuth-453510-b8/action123/nginx:latest .
-        docker push us-central1-docker.pkg.dev/astute-azimuth-453510-b8/action123/nginx:latest
+    
 
     
