@@ -69,6 +69,17 @@ jobs:
     - name: Push Docker image to Google Artifact Registry
       run: |
         docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
+
+    # Step 7: Set up kubectl for GKE
+    - name: Set up GKE cluster credentials
+      run: |
+        gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }} --zone ${{ secrets.ZONE }} --project ${{ secrets.GCP_PROJECT_ID }}
+
+      # Step 8: Update the Kubernetes Deployment with the new Docker image
+    - name: Deploy to GKE
+      run: |
+          kubectl set image deployment/my-deployment my-container=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
+          kubectl rollout status deployment/my-deployment  # Wait for the rollout to complete
         
 
     
