@@ -21,6 +21,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+      GKE_CLUSTER: autopilot-cluster-1    # Add your cluster name here.
+      GKE_ZONE: us-central1  # Add your cluster zone here.
+      DEPLOYMENT_NAME: my-image # Add your deployment name here.
+      IMAGE: my-image
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -69,6 +76,15 @@ jobs:
     - name: Push Docker image to Google Artifact Registry
       run: |
         docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
+
+     # Get the GKE credentials so we can deploy to the cluster
+    - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+        credentials: ${{ secrets.GKE_SA_KEY }}
+
+     
 
    
 
