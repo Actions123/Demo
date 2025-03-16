@@ -80,8 +80,7 @@ jobs:
         docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
 
 
-    - name: Authenticate to Google Cloud
-      run: echo "${{ secrets.GKE_SA_KEY }}" | gcloud auth activate-service-account --key-file=-
+    
 
       # Step 4: Authenticate Docker to Google Artifact Registry
     - name: Authenticate Docker to GAR
