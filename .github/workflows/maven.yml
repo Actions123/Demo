@@ -22,13 +22,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} # Google Cloud Project ID
-      GKE_CLUSTER: autopilot-cluster-1 # GKE Cluster Name
-      GKE_ZONE: us-central1  # GKE Zone (e.g., us-central1-a)
-      GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }} # Artifact Registry Repository Name (e.g., my-repository)
-      IMAGE_NAME: ${{ secrets.GAR_REPOSITORY }}/my-image # Image name in Artifact Registry
-      IMAGE_TAG: ${{ github.sha }} # Use commit SHA as the image tag
-      DEPLOYMENT_NAME: my-image # Kubernetes Deployment name
+      PROJECT_ID: ${{ secrets.GKE_CLUSTER }}
+      GKE_CLUSTER: autopilot-cluster-1    # cluster name
+      GKE_ZONE: europe-central2   # cluster zone
+      IMAGE: my-image # image name
+      IMAGE_TAG: test # image tag
+      GAR_ZONE: autopilot-cluster-1 # artifact registry zone
+      GAR_REPO: springboot-images-new # artifact registry repository
   
     steps:
     - uses: actions/checkout@v4
@@ -79,13 +79,26 @@ jobs:
       run: |
         docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
 
-      # Get the GKE credentials so we can deploy to the cluster
-    - name: 'Set up GKE credentials'
-      uses: 'google-github-actions/get-gke-credentials@6051de21ad50fbb1767bc93c11357a49082ad116' # google-github-actions/get-gke-credentials@v2
+      
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Setup gcloud CLI
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
       with:
-        cluster_name: '${{ env.GKE_CLUSTER }}'
-        location: '${{ env.GKE_ZONE }}'
-     
+        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+    - name: Set up GKE credentials
+      uses: google-github-actions/get-gke-credentials@v0
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+
+    - name: Deploy
+      run: |-
+        kubectl apply -f deploy.yml
+        kubectl get pods
 
      
 
