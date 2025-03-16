@@ -82,10 +82,7 @@ jobs:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
 
-    - name: Deploy to GKE
-      run: |
-        # Dynamically set the image tag in the deployment
-        kubectl set image deployment/my-image my-image=${GAR_REPO}/my-image:${{ github.sha }} --record
+   
       
 
     - name: Update deployment.yaml with GitHub SHA
