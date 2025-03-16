@@ -60,12 +60,12 @@ jobs:
       # Step 5: Build the Docker image
     - name: Build Docker image
       run: |
-        docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:latest .
+        docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${GITHUB_SHA} .
 
       # Step 6: Push the Docker image to Google Artifact Registry
     - name: Push Docker image to Google Artifact Registry
       run: |
-        docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:latest
+        docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${GITHUB_SHA}
 
       
     
@@ -81,6 +81,10 @@ jobs:
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
+
+    - name: Update deployment.yaml with GitHub SHA
+      run: |
+        sed -i 's|gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:latest|${GAR_REPOSITORY}/my-app:${{ github.sha }}|g' resources.yaml
 
    
       
