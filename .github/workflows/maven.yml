@@ -68,8 +68,7 @@ jobs:
         docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
 
       
-    - name: Checkout
-      uses: actions/checkout@v3
+    
 
     # Setup gcloud CLI
     - id: 'auth'
