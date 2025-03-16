@@ -26,7 +26,7 @@ jobs:
       GKE_CLUSTER: autopilot-cluster-1    # cluster name
       GKE_ZONE: us-central1   # cluster zone
       IMAGE: my-image # image name
-      IMAGE_TAG: test # image tag
+      IMAGE_TAG: latest # image tag
       GAR_ZONE: autopilot-cluster-1 # artifact registry zone
       GAR_REPO: springboot-images-new # artifact registry repository
   
@@ -92,7 +92,7 @@ jobs:
     - name: Apply the deployment to GKE
       run: |
         kubectl apply -f resources.yaml
-        kubectl rollout status deployment/my-image
+        kubectl rollout status deployment/my-image:latest
        
     
 
