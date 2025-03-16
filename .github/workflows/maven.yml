@@ -23,8 +23,8 @@ jobs:
 
     env:
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} # Google Cloud Project ID
-      GKE_CLUSTER: ${{ secrets.GKE_NAME }} # GKE Cluster Name
-      GKE_ZONE: ${{ secrets.GKE_ZONE }} # GKE Zone (e.g., us-central1-a)
+      GKE_CLUSTER: autopilot-cluster-1 # GKE Cluster Name
+      GKE_ZONE: us-central1  # GKE Zone (e.g., us-central1-a)
       GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }} # Artifact Registry Repository Name (e.g., my-repository)
       IMAGE_NAME: ${{ secrets.GAR_REPOSITORY }}/my-image # Image name in Artifact Registry
       IMAGE_TAG: ${{ github.sha }} # Use commit SHA as the image tag
