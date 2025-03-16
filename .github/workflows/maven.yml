@@ -22,12 +22,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-      GKE_CLUSTER: autopilot-cluster-1    # Add your cluster name here.
-      GKE_ZONE: us-central1  # Add your cluster zone here.
-      DEPLOYMENT_NAME: my-image # Add your deployment name here.
-      IMAGE: my-image
-
+      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} # Google Cloud Project ID
+      GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }} # GKE Cluster Name
+      GKE_ZONE: ${{ secrets.GKE_ZONE }} # GKE Zone (e.g., us-central1-a)
+      GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }} # Artifact Registry Repository Name (e.g., my-repository)
+      IMAGE_NAME: ${{ secrets.GAR_REPOSITORY }}/my-image # Image name in Artifact Registry
+      IMAGE_TAG: ${{ github.sha }} # Use commit SHA as the image tag
+      DEPLOYMENT_NAME: my-image # Kubernetes Deployment name
+  
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -76,6 +78,21 @@ jobs:
     - name: Push Docker image to Google Artifact Registry
       run: |
         docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/springboot-images-new/my-image:${{ github.sha }}
+
+    - name: Get credentials for GKE
+      run: |
+        gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
+
+      # Step 6: Pull Docker image from GAR
+    - name: Pull Docker image from GAR
+      run: |
+        docker pull ${IMAGE_NAME}:${IMAGE_TAG}
+
+      # Step 7: Deploy to GKE
+    - name: Deploy to GKE
+      run: |
+        kubectl set image deployment/${DEPLOYMENT_NAME} ${DEPLOYMENT_NAME}=${IMAGE_NAME}:${IMAGE_TAG} --record
+        kubectl rollout status deployment/${DEPLOYMENT_NAME}
 
      
 
