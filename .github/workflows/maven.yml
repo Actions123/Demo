@@ -84,7 +84,7 @@ jobs:
 
     - name: Update deployment.yaml with GitHub SHA
       run: |
-        sed -i 's|${GAR_REPO}/my-app:latest|${GAR_REPO}/my-app:${{ github.sha }}|g' resources.yaml
+        sed -i 's|us-central1-docker.pkg.dev/astute-azimuth-453510-b8/springboot-images-new/my-image:lates|$us-central1-docker.pkg.dev/astute-azimuth-453510-b8/springboot-images-new/my-image:${{ github.sha }}|g' resources.yaml
 
    
       
