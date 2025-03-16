@@ -24,7 +24,7 @@ jobs:
     env:
       PROJECT_ID: ${{ secrets.GKE_CLUSTER }}
       GKE_CLUSTER: autopilot-cluster-1    # cluster name
-      GKE_ZONE: europe-central2   # cluster zone
+      GKE_ZONE: us-central1   # cluster zone
       IMAGE: my-image # image name
       IMAGE_TAG: test # image tag
       GAR_ZONE: autopilot-cluster-1 # artifact registry zone
@@ -90,7 +90,7 @@ jobs:
         credentials_json: '${{ secrets.GKE_SA_KEY }}'
 
     - name: Set up GKE credentials
-      uses: google-github-actions/get-gke-credentials@v0
+      uses: google-github-actions/get-gke-credentials@v2
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
