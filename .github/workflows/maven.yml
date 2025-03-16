@@ -95,10 +95,13 @@ jobs:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
 
-    - name: Deploy
-      run: |-
-        kubectl apply -f resources.yaml
-        kubectl get pods
+    - name: Deploy to GKE
+      run: |
+        # Dynamically set the image tag in the deployment
+        kubectl set image deployment/my-image my-image=${GAR_REPO}/my-image:${{ github.sha }} --record
+        kubectl rollout status deployment/my-image
+
+    
 
      
 
