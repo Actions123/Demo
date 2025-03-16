@@ -86,6 +86,8 @@ jobs:
       run: |
         # Dynamically set the image tag in the deployment
         kubectl set image deployment/my-image my-image=${GAR_REPO}/my-image:${{ github.sha }} --record
+        kubectl apply -f resources.yaml
+        kubectl rollout status deployment/my-image
        
     
 
