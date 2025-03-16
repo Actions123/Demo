@@ -85,14 +85,11 @@ jobs:
    
       
 
-    - name: Update deployment.yaml with GitHub SHA
-      run: |
-        sed -i 's|gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:latest|${GAR_REPOSITORY}/my-app:${{ github.sha }}|g' resources.yaml
-
+    
     - name: Apply the deployment to GKE
       run: |
         kubectl apply -f resources.yaml
-        kubectl rollout status deployment/my-image:latest
+        kubectl rollout status deployment/my-image
        
     
 
