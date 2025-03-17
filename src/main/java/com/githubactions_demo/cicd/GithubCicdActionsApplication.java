@@ -11,7 +11,7 @@ public class GithubCicdActionsApplication {
 
 	@GetMapping("/welcome")
 	public String welcome(){
-		return "Welcome to Github actions";
+		return "Welcome to Github actions idea in cloudathon";
 	}
 
 //	echo "# github-actions-example" >> README.md.
