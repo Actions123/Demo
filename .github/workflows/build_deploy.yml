@@ -17,7 +17,7 @@ on:
 
 
 jobs:
-  build:
+  build_deploy_gke:
 
     runs-on: ubuntu-latest
 
