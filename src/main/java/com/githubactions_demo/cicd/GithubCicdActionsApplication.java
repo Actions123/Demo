@@ -14,7 +14,7 @@ public class GithubCicdActionsApplication {
 		return "Welcome to Github actions";
 	}
 
-//	echo "# github-actions-example" >> README.md
+//	echo "# github-actions-example" >> README.md.
 //	git init
 //	git add README.md
 //	git commit -m "first commit"
