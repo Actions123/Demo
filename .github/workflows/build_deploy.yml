@@ -41,6 +41,10 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: run unit test cases
+      run: mvn test
+      
+
     
         
     - name: Set up Docker Buildx
